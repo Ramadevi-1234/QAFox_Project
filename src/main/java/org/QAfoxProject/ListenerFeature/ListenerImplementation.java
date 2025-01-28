@@ -17,75 +17,59 @@ import org.testng.Reporter;
 
 public class ListenerImplementation extends BaseConfiguration implements ITestListener,IRetryAnalyzer {
 
+	int count=1;
 	@Override
 	public void onTestStart(ITestResult result) {
-		Reporter.log("onTestStart..!!",true);
+		Reporter.log("on test start",true);	
 	}
-
+	@Override
+	public boolean retry(ITestResult result) {
+		int retryuntil=5;
+		boolean flag=false;
+		if(count<=retryuntil) {
+			Reporter.log("Retry",true);
+			count++;
+			flag= true;
+		}
+return flag;
+	}
 	@Override
 	public void onTestSuccess(ITestResult result) {
-		Reporter.log("onTestSuccess..!!",true);
-
-	}
-
+		Reporter.log("on test success",true);
+		
+		}
 	@Override
 	public void onTestFailure(ITestResult result) {
-		Reporter.log("onTestFailure..!!",true);
-		//Fetch the test MethodName
-		
+		Reporter.log("on test failure",true);
 		String methodname=result.getName();
-		TakesScreenshot ts = (TakesScreenshot)WebDriverLibrary.static_driver;
-		File source = ts.getScreenshotAs(OutputType.FILE);
-		File destination = new File("./TestSceenshot/" + methodname + javautilityobj.getCurrentTime()+"m1.png");
+		TakesScreenshot ts=(TakesScreenshot) WebDriverLibrary.static_driver;
+		File source = ts.getScreenshotAs(OutputType.FILE);		
+		File destination=new File("./TakeScreenshot/"+methodname+".png");
 		try {
 			FileHandler.copy(source, destination);
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
 	}
-
 	@Override
 	public void onTestSkipped(ITestResult result) {
-		Reporter.log("onTestSkipped..!!",true);
-
+		Reporter.log("on test skipped",true);
 	}
-
 	@Override
 	public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
-		Reporter.log("onTest..!!",true);
-
+		Reporter.log("on Test Failed But With in Success Percentage",true);
 	}
-
 	@Override
 	public void onTestFailedWithTimeout(ITestResult result) {
-		Reporter.log("onTestStart..!!",true);
-
+		Reporter.log("on test failed with timeout",true);
 	}
-
 	@Override
 	public void onStart(ITestContext context) {
-		Reporter.log("onStart..!!",true);
-
+		Reporter.log("on start",true);
 	}
-
 	@Override
 	public void onFinish(ITestContext context) {
-		Reporter.log("onFinish..!!",true);
-
+		Reporter.log("on finish",true);
 	}
-		@Override
-		public boolean retry(ITestResult result) {
-			int retryuntil = 5;
-			boolean flag = false;
-			if(count < retryuntil) {
-				Reporter.log("Retry..",true);
-				count++;
-				flag = true;
-			}
-			return flag;
-		}
-	}
-	
-	
-
 }

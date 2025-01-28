@@ -1,10 +1,9 @@
 package org.QAfoxProject.GenericUtility;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 
-import io.opentelemetry.sdk.metrics.data.Data;
 
 /**
  * This Class Contains reusable methods to perform java related operations
@@ -15,37 +14,30 @@ import io.opentelemetry.sdk.metrics.data.Data;
 
 public class JavaLibrary {
 	/**
-	 * This method is Used to Pause the script execution for specific time
-	 * 
+	 * this method is used to pause the script execution for specified time
 	 * @param time
 	 */
 	public void pause(long time) {
 		try {
 			Thread.sleep(time);
-		}
-		catch(InterruptedException e) {
+		}catch(InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * This method is Used to Pause the script execution for specific time
-	 * 
-	 *  @return
+	/**this method is used to fetch current date and time
+	 * @return
 	 */
 	public String getCurrentTime() {
-		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_YYYY_hh_mm_ss");
+		Date date=new Date();
+		SimpleDateFormat sdf=new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
 		return sdf.format(date);
-	}
-	
-	/**
-	 * This method is Used to Pause the script execution for specific time
-	 * 
-	 * @param
+		}
+	/**this method is used to generates random number within the specified limit
+	 * @param limit
 	 * @return
 	 */
 	public int generateRandomNum(int limit) {
-		Random random = new Random();
+		Random random=new Random();
 		return random.nextInt(limit);
 	}
 }

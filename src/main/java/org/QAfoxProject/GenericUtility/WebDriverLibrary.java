@@ -26,203 +26,171 @@ public class WebDriverLibrary {
 	public static WebDriver static_driver;
 	public Actions action;
 	public Select select;
-
 	/**
-	 * This Method launches specified browser
-	 * 
+	 * this method launches specified browser
 	 * @param browser
 	 * @return
 	 */
 	public WebDriver launchBrowser(String browser) {
-		switch (browser) {
+		switch(browser) {
 		case "chrome":
-			driver = new ChromeDriver();
-			static_driver = driver;
+			driver=new ChromeDriver();
+			static_driver=driver;
 			break;
 		case "firefox":
-			driver = new FirefoxDriver();
-			static_driver = driver;
+			driver=new FirefoxDriver();
+			static_driver=driver;
 			break;
 		case "edge":
-			driver = new EdgeDriver();
-			static_driver = driver;
+			driver=new EdgeDriver();
+			static_driver=driver;
 			break;
-		default:
-			System.out.println("invalid browser info");
+			default:
+				System.out.println("invalid browser info");
 		}
 		return driver;
 	}
-
 	/**
-	 * this method maximize the browser
+	 * this method maximize the browser 
 	 */
 	public void maximizeBrowser() {
 		driver.manage().window().maximize();
-
 	}
-
 	/**
-	 * this method is used to navigate to the Application
-	 * 
+	 * this method is used to navigate to the application
 	 * @param url
 	 */
 	public void navigateToApp(String url) {
 		driver.get(url);
 	}
-
-	/**
-	 * This Method is used to Close the Browser
+	/**this method is used to close the browser
 	 */
 	public void closeTheBrowser() {
 		driver.close();
 	}
-
-	/**
-	 * This Method is used to Close All the Browser window/tab
+	/**this method is used to close all the browser window/tab
 	 */
 	public void closeAllBrowsers() {
 		driver.quit();
 	}
-
-	/**
-	 * This Method is used to wait the statement until element will found
-	 * 
+	/**this method is used to wait the statement until element will found 
 	 */
-	public void waituntilElementFound() {
+	public void waitUntilElementFound() {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(PathConstant.DURATION));
 	}
 	/**
-	 * This Method Waits Until Element Is Visible on the web Page
-	 * 
-	 * @param Element
+	 * this method waits until element is visible on the web page
+	 * @param time
+	 * @param element
+	 * @return
 	 */
-	public void waituntilElementFound(WebElement element) {
-		WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(PathConstant.DURATION));
-				wait.until(ExpectedConditions.visibilityOf(element));
+	public void waitUntilElementFound(WebElement element) {
+		WebDriverWait wait=new WebDriverWait(driver, Duration.ofSeconds(PathConstant.DURATION));
+		wait.until(ExpectedConditions.visibilityOf(element));
 	}
 	/**
-	 * This Metho is Used to mouse Hover on an Element
-	 * 
-	 	action = new Actions(driver);
-		action.doubleClick(eement).perform();
-	}* @param elemet
-	 * 
+	 * this method is used to mouse hover on an element
+	 * @param element
 	 */
 	public void mouseHoverToElement(WebElement element) {
-		action = new Actions(driver);
-		action.doubleClick(element).perform();
+		action=new Actions(driver);
+		action.moveToElement(element).perform();
 	}
 	/**
-	 * This Method is Used to mouse Hover on an Element
-	 * 
-	* @param element
-	 * 
+	 * this method is used to double click on an element
+	 * @param element
 	 */
 	public void doubleClickOnElement(WebElement element) {
-		action = new Actions(driver);
+		action=new Actions(driver);
 		action.doubleClick(element).perform();
 	}
-	/**
-	 * This Method is Used to mouse Hover on an Element
+	/**this method is used to right click on an element
 	 * @param element
-	 * 
 	 */
 	public void rightClickOnElement(WebElement element) {
-		action = new Actions(driver);
+		action=new Actions(driver);
 		action.contextClick(element).perform();
 	}
-	/**
-	 * This Method is Used to mouse Hover on an Element
-	 * @param elemet
+	/**this method is used to drag and drop on an element
+	 * @param source
 	 * @param target
 	 */
-	public void dragAndDropElement(WebElement source,WebElement target) {
-		action = new Actions(driver);
-		action.dragAndDrop(source,target).perform();
+	public void dragAndDropElement(WebElement source, WebElement target) {
+		action=new Actions(driver);
+		action.dragAndDrop(source, target).perform();
+	}
+	/**this method is used to select an element to drop down based on index
+	 * @param element
+	 * @param index
+	 */
+	public void selectFromDropDown(WebElement element, int index) {
+		select=new Select(element);
+		select.selectByIndex(index);
+	}
+	/**this method is used to select an element to drop down based on index
+	 * @param element
+	 * @param index
+	 */
+	public void selectFromDropDown(WebElement element, String value) {
+		select=new Select(element);
+		select.selectByValue(value);
+	}
+	/**this method is used to select an element to drop down based on index
+	 * @param element
+	 * @param index
+	 */
+	public void selectFromDropDown(String text, WebElement element) {
+		select=new Select(element);
+		select.selectByVisibleText(text);
 	}
 	/**
-	 * This Method is Used to mouse Hover on an Element
-	 * @param elemet
-	 * @param target
-	 */
-	public void selectFromDropDown(WebElement element,int index) {
-		select = new Select(element);
-		select.selectByIndex(index);
-		}
-	/**
-	 * This Method is Used to mouse Hover on an Element
-	 * @param elemet
-	 * @param target
-	 */
-	public void selectFromDropDown(WebElement element,String Value) {
-		select = new Select(element);
-		select.selectByValue(Value);
-		}
-	/**
-	 * This Method is Used to mouse Hover on an Element
-	 * @param elemet
-	 * @param target
-	 */
-	public void selectFromDropDown(String Visibletext,WebElement element){
-		select = new Select(element);
-		select.selectByVisibleText(Visibletext);
-		}
-	
-	/**
-	 * This Method is Used to mouse Hover on an Element
-	 * @param elemet
-	 * @param target
+	 * this method is used to switch to frame based on index
+	 * @param index 
 	 */
 	public void switchToFrame(int index) {
 		driver.switchTo().frame(index);
-		}
+	}
 	/**
-	 * This Method is Used to mouse Hover on an Element
-	 * @param elemet
-	 * @param target
+	 * this method is used to switch to frame based on attribute value
+	 * @param idOrName
 	 */
 	public void switchToFrame(String idOrName) {
 		driver.switchTo().frame(idOrName);
-		}
+	}
 	/**
-	 * This Method is Used to mouse Hover on an Element
-	 * @param elemet
-	 * @param target
+	 * this method is used to switch to frame based on element
+	 * @param element
 	 */
-	public void switchToFrame() {
-		driver.switchTo().defaultContent();
-		}
-	/**
-	 * This Method is Used to mouse Hover on an Element
-	 * @param elemet
-	 * @param target
+	public void switchToFrame(WebElement element) {
+		driver.switchTo().frame(element);
+	}
+	/**this method is used to switch back to default window
 	 */
 	public void switchToDefaultWindow() {
 		driver.switchTo().defaultContent();
-		}
-	/**
-	 * This Method is Used to mouse Hover on an Element
-	 * @param elemet
-	 * @param target
+	}
+	/**this method is used to switch back to parent window/frame
 	 */
-	public void switchToParentFrame() {
+	public void switchToParentWindow() {
 		driver.switchTo().parentFrame();
-		}
-	/**
-	 * This Method is Used to mouse Hover on an Element
-	 * @param elemet
-	 * @param target
+	}
+	/**this method handles alert pop up
+	 * @param status
 	 */
 	public void handleAlert(String status) {
-		Alert al = driver.switchTo().alert();
+		Alert al= driver.switchTo().alert();
 		if(status.equalsIgnoreCase("ok"))
-		al.accept();
+			al.accept();
 		else
 			al.dismiss();
-		}
-	
-	public WebElement convertDynamicXpathToWebElement(String commonPath,String replaceData) {
-		String requiredPath = String.format(commonPath, replaceData);
+	}
+	/**this method converts dynamic xpath to webElement(it will replace the xpath)
+	 * @param commonPath
+	 * @param replaceData
+	 * @return
+	 */
+	public WebElement convertDynamicXpathToWebElement(String commonPath, String replaceData) {
+		String requiredPath=String.format(commonPath, replaceData);
 		return driver.findElement(By.xpath(requiredPath));
 	}
 }

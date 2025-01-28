@@ -28,189 +28,157 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 
 public class BaseConfiguration {
 	
-	
 	public WebDriverLibrary webdriverobj;
-	public ExcelFileLibrary excelutilityobj;
+	public ExcelFileLibrary excelfileobj;
 	public PropertyFileLibrary propertyfileobj;
 	public JavaLibrary javautilityobj;
-	public JavaScriptLibrary jsutilityobj;
-	public TakeScreenShotLibrary tsutilityobj;
+	public JavaScriptLibrary javascriptobj;
+	public TakeScreenshotLibrary takescreenshotobj;
+	
 	public ExtentSparkReporter spark;
 	public ExtentReports report;
 	public ExtentTest test;
-	
 /**
- * This Method is Used To Configure the Browser
+ * This Method Used To Configure The Browser Setup
  * @param
- * */
+ */
 	@BeforeClass
 	public void browserSetup() {
-		//Initilize all the Libraries 
 		initobjects();
-		
-				
-		String browser = "Chrome";
-		String url = "https://tutorialsninja.com/demo/";
-		//Test Log
-		
-		//Precondition 1 : Launch the Browser
-		
+		String browser="chrome";
+		String url="https://tutorialsninja.com/demo/";
+	
+		//test log
 		webdriverobj.launchBrowser(browser);
-		Reporter.log("Browser Launched Successfully",true);
-
+		//precondition1:launch the browser
+		Reporter.log("Browser Launch Successfully",true);
 		
-		//Precondition 2 :Navigate to The Application
 		webdriverobj.navigateToApp(url);
-
-		Reporter.log("Navigate to the Application Successfully",true);
-
-		//Precondition 3 : Maximize the Browser
+		//precondition2:navigate to the application
+		Reporter.log("Browser navigate Successfully",true);
+		
+	
+		//precondition3: maximize the browser
 		webdriverobj.maximizeBrowser();
-
-		Reporter.log("Maximize the Browser Successfully",true);
+		Reporter.log("Browser maximize Successfully",true);
 		
-        HomePage homeobj = new HomePage(webdriverobj.driver);
 		
-		//Click on "My Account" Header Link
+		HomePage homeobj=new HomePage(webdriverobj.driver);
+		//click on "my account" header link
 		homeobj.getMyaccount_headerlink().click();
-		Reporter.log("Clicked on My Account Header Link Successfull",true);
-		
-		//Click on "Register" Header Link
-				homeobj.getRegistre_headerlink().click();
-				Reporter.log("Clicked on Register Header Link Successfull",true);
-				
-				//Click on "Login" Header Link
-				homeobj.getLogin_headerlink().click();
-				Reporter.log("Clicked on My Account Header Link Successfull",true);
-
+		Reporter.log("clicked on my account hearder link successful", true);
+		//click on register header link
+		//homeobj.getRegister_account();
+		//Reporter.log("clicked on register account hearder link successful", true);
+		//click on login register
+		homeobj.getLogin_headeraccount().click();
+		Reporter.log("clicked on login account hearder link successful", true);
+	}
+	/**
+	 * This Method Used To Configure The Browser termination
+	 * @param
+	 */
+		@AfterClass
+	public void browserTermination() {
+			webdriverobj.closeAllBrowsers();
+			//test log
+		Reporter.log("Browser terminate Successfully",true);
+			
 		}
 	/**
-	 * This Method is Used To Configure the Browser
-	 * 
-	  */
-	@AfterClass
-	public void browserTerminate() {
-		//Test Log
-				Reporter.log("Terminate Successfully",true);
-				
-		
-	}
+	 * This Method Used To Configure The browser termination
+	 * @param
+	 **/
+		@BeforeMethod(enabled = true)
+		public void login() {
+			String username = "ramadevidasari572@gmail.com";
+			String password = "Ramadevi@123";
+			//provide wait statement
+			webdriverobj.waitUntilElementFound();
+			
+			AccountLoginPage loginobj=new AccountLoginPage(webdriverobj.driver);
+			loginobj.getemailaddressTextField().sendKeys(username);
+			//enter password
+			loginobj.getpasswordTextField().sendKeys(password);
+			//click login
+			loginobj.getloginbutton().click();
+			Reporter.log("Login Successfully",true);
+		}
 	/**
-	 * This Method is Used To Perform Login Action
-	 *
-	  */
-	@BeforeMethod(enebled=false)
-	public void login() {
-		
-		//Provide Waiting Statement
-		webdriverobj.waituntilElementFound();
-		
-		
-		
-				
-		AccountLoginPage loginobj = new AccountLoginPage(webdriverobj.driver);
-		//Enter Email ID
-		loginobj.getEmailadd_textfield().sendKeys("");
-		
-		//Test Log
-		Reporter.log("Login Successfully",true);
-		
-		
-	}
+	 * This Method Used To Configure The Browser Terminated
+	 **/
+		@AfterMethod(enabled = true)
+		public void logout() {
+			Reporter.log("logout Successfully",true);
+			HomePage homeobj=new HomePage(webdriverobj.driver);
+			homeobj.getMyAccount_headertext().click();
+			homeobj.getLogout_headertext().click();
+		}
 	/**
-	 * This Method is Used To Perform Logout Action
-	 * 
-	 */
-	@AfterMethod
-public void logout() {
-		
-	//Test Log
-			Reporter.log("Logou Successfully",true);
+    * This Method Used To Configure The TestRunner level Connection
+	* @param
+    * */
+		@BeforeTest
+			public void getTestRunnerConnection() {
+				Reporter.log("Test Runner Successfully",true);
+			}
+			/**
+			 * This Method Used To terminate testrunner connection
+			 * @param
+			 * */
+		@AfterTest
+		public void terminateTestRunnerConnection() {
+			Reporter.log("terminate Test Runner Successfully",true);
 			
-	}
-
-/**
- * This Method is Used To getTestRunner Level Connection
- * 
-  */
-	@BeforeTest
-public void getTestRunnerConnection() {
-	//Test Log
-			Reporter.log("Getting TestRunnerConnection Successfully",true);
 			
-}
-
-/**
- * This Method is Used To Terminate  the TestRunner Level Connection
- * 
- */
-	@AfterTest
-public void terminateTestRunnerConnection() {
-	//Test Log
-			Reporter.log("Terminate TesrRunnerConnection Successfully",true);
+		}
+		/**
+		 * This Method Used To get/configure the database or advance report connection
+		 * @param
+		 * */
+		@BeforeSuite
+			public void getReportConnection() {
+			//create the sparkReport
+			spark=new ExtentSparkReporter("./AdvanceReports/report.html");
 			
+			
+			//configure the sharkReport information
+			spark.config().setDocumentTitle("FunctionalityTest||QaFox");
+			spark.config().setReportName("FunctionalitySuite||Verify user able to add desktop-Mac-Product");
+			spark.config().setTheme(Theme.STANDARD);
+			
+			
+			//CREATE THE EXTENT REPORT
+			report=new ExtentReports();
+			
+			//ATTACH THE SPARK REPORT AND EXTENT REPORT
+			report.attachReporter(spark);
+			
+			//CONFIGURE THE SYSTEM INFORMATION IN EXTENT REPORT
+			report.setSystemInfo("DeviceName:", "soujanya");
+			report.setSystemInfo("OperatingSystem:", "WINDOWS11");
+			report.setSystemInfo("Browser:", "Chrome");
+			report.setSystemInfo("BrowserVersion:", "131.0.6778.205");
+				Reporter.log("Getting ReportConnection Successfully",true);
+			}
+			/**
+			 * This Method Used To terminate connection
+			 * @param
+			 * */
+		@AfterSuite
+			public void terminationReportConnection() {
+			//flush the report information
+			report.flush();
+			
+				Reporter.log("Terminate ReportConnection Successfully",true);
+			}
+		public void initobjects() {
+			webdriverobj=new WebDriverLibrary();
+			excelfileobj=new ExcelFileLibrary();
+			propertyfileobj=new PropertyFileLibrary();
+			javautilityobj=new JavaLibrary();
+			javascriptobj=new JavaScriptLibrary();
+			takescreenshotobj=new TakeScreenshotLibrary();
+		}
 	
-}
-/**
- * This Method is Used To Get/Configure the Database or Advance Report Connection
- * 
- */
-	@BeforeSuite
-public void getReportConnection() {
-		ExtentSparkReporter spark = new ExtentSparkReporter("./AdvanceRepotr/report.html");
-		
-		
-		//Configure The SparkReport information
-		
-	spark.config().setDocumentTitle("Functionality Testing||QaFox");
-	spark.config().setReportName("FunctionalitySuite||Verify User Able To Add Desktop-Mac-QaFox");
-
-	spark.config().setTheme(Theme.DARK);	
-	//Create The Extent Report
-	ExtentReports report = new ExtentReports();
-	
-	
-	//Attach Spark Report and ExtentReport
-	
-	report.attachReporter(spark);
-	
-	//Configure The System Information In Extent Report
-	report.setSystemInfo("DeviceName:","LAPTOP-LAAMSI9C");
-	report.setSystemInfo("OperatingSystem:","WINDOWA 11");
-	report.setSystemInfo("Browser:","Chrome");
-	report.setSystemInfo("BrowserVersion:","chrome-Version 131.0.6778.265 (Official Build) (64-bit)\r\n"
-			+ "");
-	
-	//Create The Test Information
-	ExtentTest test = report.createTest("Functionalitytest");
-	
-		
-	//Test Log
-	Reporter.log("Getting ReporterConnection Successfully",true);
-	
-	
-}
-/**
- * This Method is Used To Terminate/Configure the Database or Advance Report Connection
- * 
- */
-	@AfterSuite
-public void terminateReportConnection() {
-		//Flush The Report Information
-		report.flush();
-
-	//Test Log
-	Reporter.log("Terminate ReportConnection Successfully",true);
-	
-}
-	public void initobjects()
-	{
-		webdriverobj = new WebDriverLibrary();
-		excelutilityobj = new ExcelFileLibrary();
-		propertyfileobj = new PropertyFileLibrary();
-		javautilityobj = new JavaLibrary();
-		jsutilityobj = new JavaScriptLibrary();
-		tsutilityobj = new TakeScreenShotLibrary();
-		
-	}
 }

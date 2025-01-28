@@ -1,5 +1,5 @@
 package org.QAfoxProject.GenericUtility;
 
-public class TakeScreenShotLibrary {
+public class TakeScreenshotLibrary {
 
 }
